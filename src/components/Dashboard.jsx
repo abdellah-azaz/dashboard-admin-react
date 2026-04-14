@@ -86,8 +86,8 @@ const Dashboard = () => {
     const fetchStats = async () => {
       try {
         const [statsRes, rtRes] = await Promise.all([
-          axios.get('http://localhost:8000/av/stats').catch(() => null),
-          axios.get('http://localhost:8000/api/realtime-events').catch(() => null)
+          axios.get(`${import.meta.env.VITE_API_URL}/av/stats`).catch(() => null),
+          axios.get(`${import.meta.env.VITE_API_URL}/api/realtime-events`).catch(() => null)
         ]);
         if (statsRes) setStats(statsRes.data);
         if (rtRes) setRealtimeData(rtRes.data);

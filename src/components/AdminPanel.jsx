@@ -26,7 +26,7 @@ const AdminPanel = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/admin/all-data?email=${currentUser.email}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/admin/all-data?email=${currentUser.email}`);
         setData(response.data);
         if (response.data.users && response.data.users.length > 0) {
           setSelectedUser(response.data.users[0]);
@@ -56,12 +56,12 @@ const AdminPanel = () => {
     const reason = window.prompt("Raison du bannissement:");
     if (reason === null) return;
     try {
-      await axios.post('http://localhost:8000/admin/users/ban', {
+      await axios.post(`${import.meta.env.VITE_API_URL}/admin/users/ban`, {
         user_email: userEmail,
         email: currentUser.email,
         reason: reason
       });
-      const response = await axios.get(`http://localhost:8000/admin/all-data?email=${currentUser.email}`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/admin/all-data?email=${currentUser.email}`);
       setData(response.data);
     } catch (err) {
       alert("Erreur lors du bannissement");
@@ -70,11 +70,11 @@ const AdminPanel = () => {
 
   const handleUnbanUser = async (userEmail) => {
     try {
-      await axios.post('http://localhost:8000/admin/users/unban', {
+      await axios.post(`${import.meta.env.VITE_API_URL}/admin/users/unban`, {
         user_email: userEmail,
         email: currentUser.email
       });
-      const response = await axios.get(`http://localhost:8000/admin/all-data?email=${currentUser.email}`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/admin/all-data?email=${currentUser.email}`);
       setData(response.data);
     } catch (err) {
       alert("Erreur lors du débannissement");
@@ -230,7 +230,7 @@ const AdminPanel = () => {
     setSendingEmail(true);
     setEmailStatus(null);
     try {
-      const res = await axios.post('http://localhost:8000/admin/send-email', {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/admin/send-email`, {
         email: currentUser.email,
         to_email: selectedUser.email,
         subject: emailSubject,
