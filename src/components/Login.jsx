@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import api from '../api/axiosClient';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -15,17 +15,21 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, {
+      const response = await api.post('/auth/login', {
         email,
         password
       });
 
       if (response.data.success) {
         const user = response.data.user;
+        const token = response.data.token;
         
         // Restriction Superadmin
         if (user.is_superadmin) {
           localStorage.setItem('user', JSON.stringify(user));
+          if (token) {
+            localStorage.setItem('token', token);
+          }
           navigate('/dashboard');
         } else {
           setError('Accès refusé. Seuls les Superadmins peuvent accéder à ce dashboard.');

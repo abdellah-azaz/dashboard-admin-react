@@ -6,8 +6,9 @@ import './App.css';
 
 const PrivateRoute = ({ children }) => {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const token = localStorage.getItem('token');
   
-  if (!user || !user.is_superadmin) {
+  if (!user || !user.is_superadmin || !token) {
     return <Navigate to="/login" />;
   }
   

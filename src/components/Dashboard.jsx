@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import axios from 'axios';
+import api from '../api/axiosClient';
 import {
   Shield, ShieldCheck, ShieldAlert, Activity, Users, Lock,
   FileText, LogOut, Settings, ChevronRight, Zap, Eye,
@@ -86,8 +86,8 @@ const Dashboard = () => {
     const fetchStats = async () => {
       try {
         const [statsRes, rtRes] = await Promise.all([
-          axios.get(`${import.meta.env.VITE_API_URL}/av/stats`).catch(() => null),
-          axios.get(`${import.meta.env.VITE_API_URL}/api/realtime-events`).catch(() => null)
+          api.get('/av/stats').catch(() => null),
+          api.get('/api/realtime-events').catch(() => null)
         ]);
         if (statsRes) setStats(statsRes.data);
         if (rtRes) setRealtimeData(rtRes.data);
@@ -102,6 +102,7 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
     navigate('/login');
   };
 
