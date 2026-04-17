@@ -228,27 +228,6 @@ const Dashboard = () => {
                   delay={0.5}
                 />
               )}
-              <QuickAction
-                icon={ShieldAlert}
-                label="Historique des scans"
-                onClick={() => navigate('/admin')}
-                color="#6366f1"
-                delay={0.55}
-              />
-              <QuickAction
-                icon={Lock}
-                label="Coffre-fort sécurisé"
-                onClick={() => navigate('/admin')}
-                color="#10b981"
-                delay={0.6}
-              />
-              <QuickAction
-                icon={Settings}
-                label="Paramètres système"
-                onClick={() => navigate('/admin')}
-                color="#f59e0b"
-                delay={0.65}
-              />
             </div>
           </motion.section>
 
