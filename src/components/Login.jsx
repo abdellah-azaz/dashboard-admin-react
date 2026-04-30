@@ -22,7 +22,7 @@ const Login = () => {
 
       if (response.data.success) {
         const user = response.data.user;
-        const token = response.data.token;
+        const token = response.data.access_token;
         
         // Restriction Superadmin
         if (user.is_superadmin) {

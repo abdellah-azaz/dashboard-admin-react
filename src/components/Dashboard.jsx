@@ -6,8 +6,11 @@ import {
   Shield, ShieldCheck, ShieldAlert, Activity, Users, Lock,
   FileText, LogOut, Settings, ChevronRight, Zap, Eye,
   Clock, AlertTriangle, CheckCircle, TrendingUp, Server,
-  Wifi, WifiOff, Cpu, HardDrive
+  Wifi, WifiOff, Cpu, HardDrive, UserPlus, BarChart2
 } from 'lucide-react';
+import AddUserModal from './AddUserModal';
+import StatsModal from './StatsModal';
+
 
 const StatCard = ({ icon: Icon, label, value, color, delay, subtitle }) => (
   <motion.div
@@ -76,6 +79,9 @@ const Dashboard = () => {
   const [stats, setStats] = useState(null);
   const [realtimeData, setRealtimeData] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
+  const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
+
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -220,15 +226,32 @@ const Dashboard = () => {
             </div>
             <div className="dash-actions-list">
               {user.is_superadmin && (
-                <QuickAction
-                  icon={Users}
-                  label="Panneau d'Administration"
-                  onClick={() => navigate('/admin')}
-                  color="#8b5cf6"
-                  delay={0.5}
-                />
+                <>
+                  <QuickAction
+                    icon={Users}
+                    label="Panneau d'Administration"
+                    onClick={() => navigate('/admin')}
+                    color="#8b5cf6"
+                    delay={0.5}
+                  />
+                  <QuickAction
+                    icon={UserPlus}
+                    label="Ajouter Utilisateur"
+                    onClick={() => setIsAddUserModalOpen(true)}
+                    color="#10b981"
+                    delay={0.6}
+                  />
+                  <QuickAction
+                    icon={BarChart2}
+                    label="Statistiques"
+                    onClick={() => setIsStatsModalOpen(true)}
+                    color="#f59e0b"
+                    delay={0.7}
+                  />
+                </>
               )}
             </div>
+
           </motion.section>
 
           {/* Right: Realtime Events */}
@@ -305,7 +328,20 @@ const Dashboard = () => {
           <p>Crypton Security Platform • {user.email} • Connecté en tant que Super Administrateur</p>
         </div>
       </div>
+
+      <AddUserModal 
+        isOpen={isAddUserModalOpen} 
+        onClose={() => setIsAddUserModalOpen(false)}
+        onUserAdded={() => {
+          // Optionally refresh dashboard stats if needed
+        }}
+      />
+      <StatsModal 
+        isOpen={isStatsModalOpen} 
+        onClose={() => setIsStatsModalOpen(false)}
+      />
     </div>
+
   );
 };
 
