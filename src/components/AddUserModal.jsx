@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, User, Mail, Phone, Lock, UserPlus, CheckCircle, AlertTriangle } from 'lucide-react';
+import { X, User, Mail, Phone, Lock, UserPlus, CheckCircle, AlertTriangle, Shield } from 'lucide-react';
 import api from '../api/axiosClient';
 
 const AddUserModal = ({ isOpen, onClose, onUserAdded }) => {
@@ -8,13 +8,18 @@ const AddUserModal = ({ isOpen, onClose, onUserAdded }) => {
     fullname: '',
     email: '',
     telephone: '',
-    password: ''
+    password: '',
+    is_superadmin: false
   });
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(null); // { type: 'success' | 'error', message: string }
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setFormData({ 
+      ...formData, 
+      [name]: type === 'checkbox' ? checked : value 
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -26,7 +31,7 @@ const AddUserModal = ({ isOpen, onClose, onUserAdded }) => {
       const response = await api.post('/admin/create-user', formData);
       if (response.data.success) {
         setStatus({ type: 'success', message: 'Utilisateur créé avec succès !' });
-        setFormData({ fullname: '', email: '', telephone: '', password: '' });
+        setFormData({ fullname: '', email: '', telephone: '', password: '', is_superadmin: false });
         if (onUserAdded) onUserAdded();
         setTimeout(() => {
           onClose();
@@ -111,6 +116,22 @@ const AddUserModal = ({ isOpen, onClose, onUserAdded }) => {
                 placeholder="••••••••"
                 required
               />
+            </div>
+
+            <div className="modal-field-checkbox">
+              <label className="checkbox-container">
+                <input 
+                  type="checkbox" 
+                  name="is_superadmin"
+                  checked={formData.is_superadmin}
+                  onChange={handleChange}
+                />
+                <span className="checkmark"></span>
+                <div className="checkbox-label-content">
+                  <Shield size={14} className="text-primary" />
+                  <span>Accorder les privilèges Administrateur</span>
+                </div>
+              </label>
             </div>
 
             {status && (
